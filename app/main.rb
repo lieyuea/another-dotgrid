@@ -1,4 +1,4 @@
-def defaults
+def init
   return unless $state.tick_count.zero?
 
   $gtk.set_window_fullscreen
@@ -10,16 +10,16 @@ def defaults
   $keybinds ||= $default_keybinds
 
   $scroll_bar = {
-    x: $grid.right - 15,
-    y: 357,
+    x: $grid.right - 8,
+    y: 45,
     max_y: 617,
     min_y: 45,
-    w: 14,
+    w: 7,
     h: 48,
     id: :scroll_bar,
     primitive_marker: :solid
   }
-  scroll_area = {
+  scroll_bar_border = {
     x: $scroll_bar.x,
     y: 45,
     w: $scroll_bar.w,
@@ -27,10 +27,10 @@ def defaults
     primitive_marker: :border
   }
 
-  $outputs.static_primitives << [ $scroll_bar, scroll_area, ]
+  $outputs.static_primitives << [ $scroll_bar, scroll_bar_border, ]
 end
 
-def controls
+def calc
   mouse = $inputs.mouse
 
   if mouse.wheel
@@ -66,8 +66,8 @@ def controls
 end
 
 def tick args
-  defaults
-  controls
+  init
+  calc
 
   $outputs.debug << [
     {
@@ -77,11 +77,7 @@ def tick args
     }, {
       x: 0,
       y: 700,
-      text: "framerate: #{$gtk.current_framerate}"
-    }, {
-      x: 270,
-      y: 720,
-      text: "held obj: #{$mouse_held.id}",
+      text: $scroll_bar
     },
     $layout.debug_primitives
   ]
