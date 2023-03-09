@@ -1,5 +1,5 @@
-def defaults args
-  return unless args.state.tick_count.zero?
+def defaults
+  return unless $state.tick_count.zero?
 
   $gtk.set_window_fullscreen
 
@@ -27,11 +27,11 @@ def defaults args
     primitive_marker: :border
   }
 
-  args.outputs.static_primitives << [ $scroll_bar, scroll_area, ]
+  $outputs.static_primitives << [ $scroll_bar, scroll_area, ]
 end
 
-def controls args
-  mouse = args.inputs.mouse
+def controls
+  mouse = $inputs.mouse
 
   if mouse.wheel
     $scroll_bar.y += mouse.wheel.y * 52
@@ -59,25 +59,25 @@ def controls args
     $mouse_held = nil
   end
 
-  case args.inputs.keyboard.key_down.char
+  case $inputs.keyboard.key_down.char
     when $keybinds[:fullscreen] then $gtk.set_window_fullscreen !$gtk.instance_variable_get(:@window_is_fullscreen)
-    when $keybinds[:save_state] then args.gtk.save_state
+    when $keybinds[:save_state] then $gtk.save_state
   end
 end
 
 def tick args
-  defaults args
-  controls args
+  defaults
+  controls
 
   $outputs.debug << [
     {
       x: 0,
       y: 720,
-      text: "mouse coord: #{args.inputs.mouse.x}, #{args.inputs.mouse.y}"
+      text: "mouse coord: #{$inputs.mouse.x}, #{$inputs.mouse.y}"
     }, {
       x: 0,
       y: 700,
-      text: "framerate: #{args.gtk.current_framerate}"
+      text: "framerate: #{$gtk.current_framerate}"
     }, {
       x: 270,
       y: 720,
