@@ -44,11 +44,11 @@ def controls
 
   if mouse.click
     if mouse.inside_rect? $scroll_bar
-      $mouse_held = $scroll_bar
+      $scroll_bar_held = true
     end
   end
 
-  if mouse.button_left && $mouse_held
+  if mouse.button_left && $scroll_bar_held
     $scroll_bar.y = mouse.y - $scroll_bar.h / 2
     if $scroll_bar.y >= $scroll_bar.max_y
       $scroll_bar.y = $scroll_bar.max_y
@@ -56,7 +56,7 @@ def controls
       $scroll_bar.y = $scroll_bar.min_y
     end
   else
-    $mouse_held = nil
+    $scroll_bar_held = nil
   end
 
   case $inputs.keyboard.key_down.char
