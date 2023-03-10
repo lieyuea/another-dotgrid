@@ -1,7 +1,7 @@
 def init
   return unless $state.tick_count.zero?
 
-  # $gtk.set_window_fullscreen
+  $gtk.set_window_fullscreen
 
   $default_keybinds = {
     fullscreen: 'p',
@@ -29,7 +29,11 @@ def init
   $points = []
   60.times do |x|
     30.times do |y|
-      $points << { x: 50 + 20 * x, y: 650 - 20 * y, w: 2, h: 2, primitive_marker: :solid }
+      if y % 5 == 0 && x % 5 == 0
+        $points << { x: 50 + 20 * x, y: 650 - 20 * y, w: 2, h: 2, primitive_marker: :solid }
+      else
+        $points << { x: 50 + 20 * x, y: 650 - 20 * y, w: 1, h: 1, primitive_marker: :solid }
+      end
     end
   end
 
@@ -84,7 +88,7 @@ def tick args
   calc
 
   $outputs.debug << [
-    { x: 0, y: 720, text: "mouse coord: #{$inputs.mouse.x}, #{$inputs.mouse.y}" },
+    $gtk.framerate_diagnostics_primitives,
     # $layout.debug_primitives
   ]
 end
