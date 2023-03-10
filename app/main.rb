@@ -36,7 +36,7 @@ def init
   $outputs.static_primitives << [ $scroll_bar, scroll_bar_border, $points ]
 end
 
-def calc
+def mouse_input
   mouse = $inputs.mouse
 
   if mouse.wheel
@@ -47,7 +47,8 @@ def calc
       $scroll_bar.y = $scroll_bar.min_y
     end
   end
-
+  # since the scroll bar is so small, just keep track of if it's held or not
+  # instead of dragging inside the bar
   if mouse.click
     if mouse.inside_rect? $scroll_bar
       $scroll_bar_held = true
@@ -64,11 +65,18 @@ def calc
   else
     $scroll_bar_held = nil
   end
+end
 
+def keyboard_input
   case $inputs.keyboard.key_down.char
     when $keybinds[:fullscreen] then $gtk.set_window_fullscreen !$gtk.instance_variable_get(:@window_is_fullscreen)
     # when $keybinds[:save_state] then $gtk.save_state
   end
+end
+
+def calc
+  mouse_input
+  keyboard_input
 end
 
 def tick args
