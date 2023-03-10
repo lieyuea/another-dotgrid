@@ -1,7 +1,7 @@
 def init
   return unless $state.tick_count.zero?
 
-  $gtk.set_window_fullscreen
+  # $gtk.set_window_fullscreen
 
   $default_keybinds = {
     fullscreen: 'p',
@@ -10,26 +10,26 @@ def init
   $keybinds ||= $default_keybinds
 
   $scroll_bar = {
-    x: $grid.right - 8,
-    y: 45,
-    max_y: 617,
-    min_y: 45,
-    w: 7,
-    h: 48,
+    x: 1270,
+    y: 50,
+    max_y: 600,
+    min_y: 50,
+    w: 9,
+    h: 50,
     primitive_marker: :solid
   }
   scroll_bar_border = {
     x: $scroll_bar.x,
-    y: 45,
+    y: $scroll_bar.min_y,
     w: $scroll_bar.w,
-    h: 620,
+    h: $scroll_bar.max_y,
     primitive_marker: :border
   }
 
   $points = []
-  95.times do |x|
-    48.times do |y|
-      $points << { x: 25 + 13 * x, y: 50 + 13 * y, w: 2, h: 2, primitive_marker: :solid }
+  60.times do |x|
+    30.times do |y|
+      $points << { x: 50 + 20 * x, y: 650 - 20 * y, w: 2, h: 2, primitive_marker: :solid }
     end
   end
 
@@ -40,7 +40,7 @@ def calc
   mouse = $inputs.mouse
 
   if mouse.wheel
-    $scroll_bar.y += mouse.wheel.y * 52
+    $scroll_bar.y += mouse.wheel.y * $scroll_bar.h
     if $scroll_bar.y >= $scroll_bar.max_y
       $scroll_bar.y = $scroll_bar.max_y
     elsif $scroll_bar.y <= $scroll_bar.min_y
@@ -76,15 +76,7 @@ def tick args
   calc
 
   $outputs.debug << [
-    {
-      x: 0,
-      y: 720,
-      text: "mouse coord: #{$inputs.mouse.x}, #{$inputs.mouse.y}"
-    }, {
-      x: 0,
-      y: 700,
-      text: $scroll_bar
-    },
+    { x: 0, y: 720, text: "mouse coord: #{$inputs.mouse.x}, #{$inputs.mouse.y}" },
     # $layout.debug_primitives
   ]
 end
