@@ -5,7 +5,7 @@ def init
 
   $default_keybinds = {
     fullscreen: 'p',
-    save_state: 'o',
+    # save_state: 'o',
   }
   $keybinds ||= $default_keybinds
 
@@ -16,7 +16,6 @@ def init
     min_y: 45,
     w: 7,
     h: 48,
-    id: :scroll_bar,
     primitive_marker: :solid
   }
   scroll_bar_border = {
@@ -27,7 +26,14 @@ def init
     primitive_marker: :border
   }
 
-  $outputs.static_primitives << [ $scroll_bar, scroll_bar_border, ]
+  $points = []
+  95.times do |x|
+    48.times do |y|
+      $points << { x: 25 + 13 * x, y: 50 + 13 * y, w: 2, h: 2, primitive_marker: :solid }
+    end
+  end
+
+  $outputs.static_primitives << [ $scroll_bar, scroll_bar_border, $points ]
 end
 
 def calc
@@ -61,7 +67,7 @@ def calc
 
   case $inputs.keyboard.key_down.char
     when $keybinds[:fullscreen] then $gtk.set_window_fullscreen !$gtk.instance_variable_get(:@window_is_fullscreen)
-    when $keybinds[:save_state] then $gtk.save_state
+    # when $keybinds[:save_state] then $gtk.save_state
   end
 end
 
@@ -79,7 +85,7 @@ def tick args
       y: 700,
       text: $scroll_bar
     },
-    $layout.debug_primitives
+    # $layout.debug_primitives
   ]
 end
 
