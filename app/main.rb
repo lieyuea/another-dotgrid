@@ -11,11 +11,11 @@ def init
 
   $scroll_bar = {
     x: 1270,
-    y: 50,
+    y: 60,
     max_y: 600,
-    min_y: 50,
+    min_y: 60,
     w: 9,
-    h: 50,
+    h: 60,
     primitive_marker: :solid
   }
   scroll_bar_border = {
