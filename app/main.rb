@@ -26,15 +26,26 @@ def init
     primitive_marker: :border
   }
 
-  $points = []
+  $points     = {}
+  point_arr   = []
+  $point_rows = []
+  $point_cols = []
+
   60.times do |x|
+    $points[x] = {}
     30.times do |y|
       if y % 5 == 0 && x % 5 == 0
-        $points << { x: 50 + 20 * x, y: 650 - 20 * y, w: 2, h: 2, primitive_marker: :solid }
+        $points[x][y] = { x: 50 + 20 * x, y: 650 - 20 * y, w: 2, h: 2, primitive_marker: :solid }
+        point_arr << $points[x][y]
       else
-        $points << { x: 50 + 20 * x, y: 650 - 20 * y, w: 1, h: 1, primitive_marker: :solid }
+        $points[x][y] = { x: 50 + 20 * x, y: 650 - 20 * y, w: 1, h: 1, primitive_marker: :solid }
+        point_arr << $points[x][y]
       end
+
+      next if x > 0
+      $point_rows << point_arr.last.y
     end
+    $point_cols << point_arr.last.x
   end
 
   $outputs.static_primitives << [ $scroll_bar, scroll_bar_border, $points ]
